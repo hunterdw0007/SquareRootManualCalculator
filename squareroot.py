@@ -10,15 +10,19 @@
 # 8. Start the process over from step 3
 
 
-import math
+import cmath
 
 print("Input a number to find the square root manually:")
 
 rootnum = 0
+negflag = False
 
 while True:
     try:
         rootnum = int(input())
+        if(rootnum < 0):
+            rootnum = -1 * rootnum
+            negflag = True
         break
     except:
         print("\nInput must be an integer.")
@@ -86,10 +90,12 @@ while precision > precisioncount:
     # Uncomment this and watch it build the square root digit by digit
     # print(currentsqrt)
 
+rootstring += 'i' if negflag else ''
+
 print(f"The square root of {rootnum} is:")
 
 print(rootstring)
 
 # This is weak in comparison
-print(math.sqrt(rootnum))
+print(cmath.sqrt(-rootnum)) if negflag else print(cmath.sqrt(rootnum))
 
