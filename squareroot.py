@@ -11,6 +11,66 @@
 
 
 import cmath
+import math
+import time
+
+
+def manualsqrt(rootnum, precision):
+    # rootstring holds a string representation of the final value so that it can be printed
+    rootstring = ""
+
+    precisioncount = 0
+
+    # Finding value before the decimal
+
+    x = 1
+
+    # represents the value of the sqrt without a decimal
+    currentsqrt = 0
+
+    while True:
+
+        if x**2 == rootnum:
+            currentsqrt = x
+            print("You input a perfect square. Good job!")
+            return str(currentsqrt)
+
+        elif x**2 > rootnum:
+            currentsqrt = x-1
+            break
+
+        else:
+            x += 1
+
+    rootstring = str(currentsqrt) + '.'
+
+    subvalue = rootnum - currentsqrt**2
+
+    while precision > precisioncount:
+
+        subvalue *= 100
+
+        comparevalue = currentsqrt * 20
+
+        for i in range(9, -1, -1):
+
+            x = (comparevalue + i) * i
+
+            if(x <= subvalue):
+                rootstring += str(i)
+                currentsqrt = currentsqrt * 10 + i
+                subvalue = subvalue - x
+                break
+
+        precisioncount += 1
+
+        # Uncomment this and watch it build the square root digit by digit
+        # print(currentsqrt)
+
+    rootstring += 'i' if negflag else ''
+
+    return rootstring
+
 
 print("Input a number to find the square root manually:")
 
@@ -39,63 +99,18 @@ while True:
     except:
         print("\nInput must be an integer.")
 
-# rootstring holds a string representation of the final value so that it can be printed
-rootstring = ""
 
-precisioncount = 0
+begin = time.time()
 
-# Finding value before the decimal
+rootstring = manualsqrt(rootnum, precision)
 
-x = 1
-
-# represents the value of the sqrt without a decimal
-currentsqrt = 0
-
-while True:
-
-    if x**2 == rootnum:
-        currentsqrt = x
-        print("You input a perfect square. Good job!")
-        break
-
-    elif x**2 > rootnum:
-        currentsqrt = x-1
-        break
-
-    else:
-        x += 1
-
-rootstring = str(currentsqrt) + '.'
-
-subvalue = rootnum - currentsqrt**2
-
-while precision > precisioncount:
-
-    subvalue *= 100
-
-    comparevalue = currentsqrt * 20
-
-    for i in range(9,-1,-1):
-        
-        x = (comparevalue + i) * i
-
-        if(x <= subvalue):
-            rootstring += str(i)
-            currentsqrt = currentsqrt * 10 + i
-            subvalue = subvalue - x
-            break
-
-    precisioncount += 1
-
-    # Uncomment this and watch it build the square root digit by digit
-    # print(currentsqrt)
-
-rootstring += 'i' if negflag else ''
+comptime = time.time() - begin
 
 print(f"The square root of {rootnum} is:")
 
 print(rootstring)
 
-# This is weak in comparison
-print(cmath.sqrt(-rootnum)) if negflag else print(cmath.sqrt(rootnum))
+print(f'Runtime is {comptime:.5f} seconds')
 
+# This is weak in comparison
+print(cmath.sqrt(-rootnum)) if negflag else print(math.sqrt(rootnum))
